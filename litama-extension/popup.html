@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body { width: 340px; font-family: -apple-system, sans-serif; background: #0f1115; color: #e6e8eb; padding: 16px; }
+    h1 { font-size: 14px; margin: 0 0 12px; letter-spacing: 0.3px; }
+    input[type=file] { width: 100%; margin-bottom: 10px; font-size: 12px; color: #8b93a1; }
+    button { width: 100%; padding: 9px; background: #3ecf8e; border: none; border-radius: 6px; color: #05130c; font-weight: 700; cursor: pointer; font-size: 13px; }
+    button:disabled { background: #2a2f38; color: #8b93a1; cursor: not-allowed; }
+    #status { margin-top: 10px; font-size: 12px; color: #8b93a1; white-space: pre-line; font-family: monospace; max-height: 220px; overflow-y: auto; }
+    #app-status { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; font-size: 12px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #3ecf8e; }
+    .dot.off { background: #f5a623; }
+    .dot.unknown { background: #555; }
+  </style>
+</head>
+<body>
+  <h1>ITAM — Import from Excel</h1>
+  <div id="app-status"><span class="dot unknown" id="dot"></span><span id="app-status-text">Checking app...</span></div>
+  <input type="file" id="file-input" accept=".xlsx,.xls,.csv" />
+  <button id="import-btn" disabled>Import into ITAM</button>
+  <div id="status"></div>
+  <script src="lib/xlsx.full.min.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "itam-app",
+  "version": "0.1.0-demo",
+  "description": "ITAM desktop app demo — asset/user/project management, offline+online",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "docx": "^8.5.0",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "electron": "^43.4.1"
+  }
+}

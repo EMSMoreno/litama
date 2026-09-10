@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ITAM</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="statusbar" id="statusbar">
+      <div class="statusbar-left">
+        <span class="brand">ITAM</span>
+      </div>
+      <div class="statusbar-right">
+        <span id="status-dot" class="dot"></span>
+        <span id="status-label">ONLINE</span>
+      </div>
+    </header>
+    <div class="statusbar-sub" id="statusbar-sub">Last sync: —</div>
+
+    <div class="login-bar" id="login-bar">
+      <div id="login-logged-out">
+        <span class="login-label">Log in as:</span>
+        <select id="login-select"></select>
+        <button id="login-btn" class="btn-secondary">Log in</button>
+      </div>
+      <div id="login-logged-in" style="display: none">
+        <span class="dot" id="login-status-dot"></span>
+        <span id="login-name-label"></span>
+        <button id="my-profile-btn" class="btn-secondary">My Profile</button>
+        <button id="logout-btn" class="btn-secondary">Log out</button>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="tabs">
+        <button class="tab active" data-tab="users">Users</button>
+        <button class="tab" data-tab="assets">Assets</button>
+        <button class="tab" data-tab="history">History</button>
+        <button class="tab" data-tab="itteam">IT Team</button>
+        <button
+          class="tab"
+          data-tab="kanban"
+          id="kanban-tab"
+          style="display: none"
+        >
+          Process Board
+        </button>
+        <button
+          class="tab"
+          data-tab="tickets"
+          id="tickets-tab"
+          style="display: none"
+        >
+          Tickets
+        </button>
+      </div>
+      <div class="toolbar-right">
+        <button id="add-kit-btn" class="btn-primary" style="display: none">
+          + Add User &amp; IT Equipment
+        </button>
+        <button id="delete-all-btn" class="btn-danger" style="display: none">
+          Delete All Records
+        </button>
+        <button id="theme-toggle-btn" class="btn-secondary">🌙 Dark</button>
+        <label class="toggle">
+          <input type="checkbox" id="connectivity-toggle" checked />
+          <span>Simulate online</span>
+        </label>
+      </div>
+    </div>
+
+    <main>
+      <section id="panel-users" class="panel active">
+        <table>
+          <thead>
+            <tr>
+              <th>IT Ticket</th>
+              <th>Workday ID</th>
+              <th>Name</th>
+              <th>Project</th>
+              <th>Team Leader</th>
+              <th>Phone</th>
+              <th>Updated</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="users-body"></tbody>
+        </table>
+      </section>
+
+      <section id="panel-assets" class="panel">
+        <table>
+          <thead>
+            <tr>
+              <th>Employee Workday ID</th>
+              <th>Agent's Name</th>
+              <th>Type</th>
+              <th>Model</th>
+              <th>Serial #</th>
+              <th>Status</th>
+              <th>Site</th>
+              <th>Updated</th>
+            </tr>
+          </thead>
+          <tbody id="assets-body"></tbody>
+        </table>
+      </section>
+
+      <section id="panel-history" class="panel">
+        <table>
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Entity</th>
+              <th>Key</th>
+              <th>Action</th>
+              <th>Detail</th>
+              <th>Site</th>
+              <th>Received By IT</th>
+            </tr>
+          </thead>
+          <tbody id="history-body"></tbody>
+        </table>
+      </section>
+
+      <section id="panel-itteam" class="panel">
+        <div id="itteam-groups"></div>
+      </section>
+
+      <section id="panel-kanban" class="panel">
+        <div class="kanban-toolbar">
+          <button id="add-card-btn" class="btn-primary">+ Add Card</button>
+        </div>
+        <div id="kanban-board" class="kanban-board"></div>
+      </section>
+
+      <section id="panel-tickets" class="panel">
+        <div class="kanban-toolbar">
+          <button id="new-ticket-btn" class="btn-primary" style="display: none">
+            + New Ticket
+          </button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Ticket #</th>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Requester</th>
+              <th>For</th>
+              <th>Assigned</th>
+              <th>Updated</th>
+            </tr>
+          </thead>
+          <tbody id="tickets-body"></tbody>
+        </table>
+      </section>
+    </main>
+
+    <!-- Add User & IT Equipment modal (full kit creation) -->
+    <div id="kit-modal-backdrop" class="modal-backdrop" style="display: none">
+      <div class="modal modal-wide">
+        <h2>Add User &amp; IT Equipment</h2>
+        <p class="modal-hint">
+          Any field left blank is saved as "?" so it's easy to spot and fill in
+          later.
+        </p>
+
+        <div class="modal-grid">
+          <label>IT Ticket<input type="text" id="kit-form-it_ticket" /></label>
+          <label
+            >Employee Workday ID<input type="text" id="kit-form-workday_id"
+          /></label>
+          <label
+            >Agent's Name *<input type="text" id="kit-form-agent_name"
+          /></label>
+
+          <label
+            >Computer Model<input type="text" id="kit-form-computer_model"
+          /></label>
+          <label
+            >Computer S/N<input type="text" id="kit-form-computer_serial"
+          /></label>
+
+          <label
+            >M1 Model<input type="text" id="kit-form-monitor1_model"
+          /></label>
+          <label
+            >M1 S/N<input type="text" id="kit-form-monitor1_serial"
+          /></label>
+
+          <label
+            >M2 Model<input type="text" id="kit-form-monitor2_model"
+          /></label>
+          <label
+            >M2 S/N<input type="text" id="kit-form-monitor2_serial"
+          /></label>
+
+          <label
+            >MFA (YubiKey number)<input type="text" id="kit-form-mfa"
+          /></label>
+          <label
+            >Received By IT<input type="text" id="kit-form-received_by"
+          /></label>
+
+          <label
+            >Site
+            <select id="kit-form-site">
+              <option value="">—</option>
+              <option value="Lisbon">Lisbon</option>
+              <option value="Porto">Porto</option>
+              <option value="Braga">Braga</option>
+            </select>
+          </label>
+          <label
+            >Last Agent's Project Name<input type="text" id="kit-form-project"
+          /></label>
+
+          <label
+            >Agent's Phone Number<input type="text" id="kit-form-phone"
+          /></label>
+          <label
+            >Team Leader<input type="text" id="kit-form-team_leader"
+          /></label>
+        </div>
+
+        <div class="checkbox-grid">
+          <label class="checkbox-label"
+            ><input type="checkbox" id="kit-form-webcam" /> Webcam</label
+          >
+          <label class="checkbox-label"
+            ><input type="checkbox" id="kit-form-headset" /> Headset</label
+          >
+          <label class="checkbox-label"
+            ><input type="checkbox" id="kit-form-ethernet_cable" /> Ethernet
+            Cable</label
+          >
+          <label class="checkbox-label"
+            ><input type="checkbox" id="kit-form-kbm" /> KBM</label
+          >
+          <label class="checkbox-label"
+            ><input type="checkbox" id="kit-form-power_video_cables" />
+            Power/Video Cables</label
+          >
+        </div>
+
+        <label class="obs-label"
+          >Obs<textarea id="kit-form-obs" rows="4"></textarea>
+        </label>
+
+        <div class="modal-actions">
+          <button id="kit-form-cancel" class="btn-secondary">Cancel</button>
+          <button id="kit-form-save" class="btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add/Edit User modal -->
+    <div id="user-modal-backdrop" class="modal-backdrop" style="display: none">
+      <div class="modal">
+        <h2 id="user-modal-title">Edit User</h2>
+        <input type="hidden" id="user-form-id" />
+        <label>IT Ticket<input type="text" id="user-form-it_ticket" /></label>
+        <label
+          >Received By IT (only needed if setting/changing the ticket)<input
+            type="text"
+            id="user-form-received_by"
+        /></label>
+        <label>Workday ID<input type="text" id="user-form-workday_id" /></label>
+        <label>Name<input type="text" id="user-form-name" /></label>
+        <label>Project<input type="text" id="user-form-project" /></label>
+        <label
+          >Team Leader<input type="text" id="user-form-team_leader"
+        /></label>
+        <label>Phone<input type="text" id="user-form-phone" /></label>
+        <div class="modal-actions">
+          <button id="user-form-cancel" class="btn-secondary">Cancel</button>
+          <button id="user-form-save" class="btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete confirmation modal -->
+    <div
+      id="confirm-modal-backdrop"
+      class="modal-backdrop"
+      style="display: none"
+    >
+      <div class="modal">
+        <h2 id="confirm-modal-title">Delete user</h2>
+        <p id="confirm-modal-message" class="modal-message"></p>
+        <div class="modal-actions">
+          <button id="confirm-modal-cancel" class="btn-secondary">
+            Cancel
+          </button>
+          <button id="confirm-modal-confirm" class="btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Staff equipment view modal -->
+    <div
+      id="staff-eq-modal-backdrop"
+      class="modal-backdrop"
+      style="display: none"
+    >
+      <div class="modal modal-wide">
+        <h2 id="staff-eq-modal-title">Equipment handled</h2>
+        <div id="staff-eq-modal-body" class="eq-modal-body"></div>
+        <div class="modal-actions">
+          <button id="staff-eq-modal-close" class="btn-secondary">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Process Board card modal -->
+    <div id="card-modal-backdrop" class="modal-backdrop" style="display: none">
+      <div class="modal">
+        <h2>Add Card</h2>
+        <label>Title<input type="text" id="card-form-title" /></label>
+        <label
+          >Starting Stage
+          <select id="card-form-column"></select>
+        </label>
+        <label
+          >Card Color<input type="color" id="card-form-color" value="#3ecf8e"
+        /></label>
+        <label>Notes<textarea id="card-form-notes" rows="3"></textarea></label>
+        <div class="modal-actions">
+          <button id="card-form-cancel" class="btn-secondary">Cancel</button>
+          <button id="card-form-save" class="btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- My Profile modal -->
+    <div
+      id="profile-modal-backdrop"
+      class="modal-backdrop"
+      style="display: none"
+    >
+      <div class="modal">
+        <h2>My Profile</h2>
+        <div id="profile-modal-body" class="profile-body"></div>
+        <div class="modal-actions">
+          <button id="profile-modal-close" class="btn-secondary">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Ticket modal -->
+    <div
+      id="ticket-modal-backdrop"
+      class="modal-backdrop"
+      style="display: none"
+    >
+      <div class="modal modal-wide">
+        <h2>New Ticket</h2>
+        <label>Title<input type="text" id="ticket-form-title" /></label>
+        <label
+          >Description<textarea
+            id="ticket-form-description"
+            class="ticket-desc-input"
+            rows="8"
+          ></textarea>
+        </label>
+        <label
+          >Category
+          <select id="ticket-form-category">
+            <option>Hardware</option>
+            <option>Software</option>
+            <option>Access Request</option>
+            <option>New Equipment</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label
+          >Priority
+          <select id="ticket-form-priority">
+            <option>Low</option>
+            <option selected>Medium</option>
+            <option>High</option>
+            <option>Critical</option>
+          </select>
+        </label>
+        <label
+          >For Employee (optional)<input
+            type="text"
+            id="ticket-form-for_employee"
+            placeholder="Name of the agent this is for"
+        /></label>
+        <div class="modal-actions">
+          <button id="ticket-form-cancel" class="btn-secondary">Cancel</button>
+          <button id="ticket-form-save" class="btn-primary">
+            Create Ticket
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ticket Detail modal -->
+    <div
+      id="ticket-detail-backdrop"
+      class="modal-backdrop"
+      style="display: none"
+    >
+      <div class="modal modal-wide">
+        <h2 id="ticket-detail-title">Ticket</h2>
+        <div id="ticket-detail-body"></div>
+        <div class="modal-actions">
+          <button id="ticket-detail-close" class="btn-secondary">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="app-footer">
+      App Version 1.0 by IT Eduardo M · August 2026 · All rights reserved
+    </footer>
+
+    <script src="renderer.js"></script>
+  </body>
+</html>

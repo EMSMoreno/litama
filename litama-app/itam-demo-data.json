@@ -1,0 +1,248 @@
+{
+  "users": [],
+  "assets": [],
+  "history": [
+    {
+      "id": 23,
+      "entity_type": "ticket",
+      "entity_key": "IT-2026-002",
+      "action": "ticket_created",
+      "detail": "Deliver Headset - Catia Palma (Hardware, Low)",
+      "actor": "Ruben Quintino",
+      "site": null,
+      "it_ticket": null,
+      "ticket_status": null,
+      "timestamp": "2026-09-10T20:00:36.899Z"
+    },
+    {
+      "id": 21,
+      "entity_type": "ticket",
+      "entity_key": "IT-2026-001",
+      "action": "ticket_created",
+      "detail": "Deliver IT Equipment Ana Taveira (Hardware, Medium)",
+      "actor": "Ruben Quintino",
+      "site": null,
+      "it_ticket": null,
+      "ticket_status": null,
+      "timestamp": "2026-09-10T19:59:05.543Z"
+    }
+  ],
+  "itStaff": [
+    {
+      "id": 1,
+      "name": "Eduardo Moreno",
+      "site": "Lisbon",
+      "status": "online",
+      "reason": "",
+      "role": "technician",
+      "updated_at": "2026-09-10T20:18:10.372Z",
+      "job_title": "Sr. Technical Representative"
+    },
+    {
+      "id": 2,
+      "name": "Francisco Martins",
+      "site": "Lisbon",
+      "status": "online",
+      "reason": "Going to marry, offline from 23-28 August",
+      "role": "technician",
+      "updated_at": "2026-09-10T20:18:13.708Z",
+      "job_title": "Technical I"
+    },
+    {
+      "id": 3,
+      "name": "Jesuivan da Silva Filipe",
+      "site": "Lisbon",
+      "status": "online",
+      "reason": "",
+      "role": "technician",
+      "updated_at": "2026-09-10T20:18:16.704Z",
+      "job_title": "Technical I"
+    },
+    {
+      "id": 5,
+      "name": "Ruben Quintino",
+      "site": "Lisbon",
+      "status": "online",
+      "reason": "",
+      "role": "technician",
+      "updated_at": "2026-09-10T20:18:02.633Z",
+      "job_title": "IT Team Lead"
+    },
+    {
+      "id": 6,
+      "name": "Vasco Rosa",
+      "site": "Lisbon",
+      "status": "online",
+      "reason": "",
+      "role": "manager",
+      "updated_at": "2026-09-10T20:21:11.570Z",
+      "job_title": "IT Manager"
+    },
+    {
+      "id": 7,
+      "name": "Leonardo Ribeiro",
+      "site": "Porto",
+      "status": "online",
+      "reason": "",
+      "role": "technician",
+      "updated_at": "2026-09-10T19:57:44.338Z"
+    },
+    {
+      "id": 8,
+      "name": "António Cruz",
+      "site": "Porto",
+      "status": "online",
+      "reason": "",
+      "role": "technician",
+      "updated_at": "2026-09-10T19:57:44.338Z"
+    },
+    {
+      "id": 9,
+      "name": "Fernando Costa",
+      "site": "Porto",
+      "status": "online",
+      "reason": "",
+      "role": "technician",
+      "updated_at": "2026-09-10T19:57:44.338Z"
+    },
+    {
+      "id": 10,
+      "name": "Andre Gonçalves",
+      "site": "Porto",
+      "status": "online",
+      "reason": "",
+      "role": "technician",
+      "updated_at": "2026-09-10T19:57:44.338Z"
+    },
+    {
+      "id": 11,
+      "name": "Márcio Sena",
+      "site": "Braga",
+      "status": "online",
+      "reason": "",
+      "role": "technician",
+      "updated_at": "2026-09-10T19:57:44.338Z"
+    },
+    {
+      "id": 12,
+      "name": "Gonçalo Azevedo",
+      "site": "Braga",
+      "status": "online",
+      "reason": "",
+      "role": "technician",
+      "updated_at": "2026-09-10T19:57:44.338Z"
+    },
+    {
+      "id": 13,
+      "name": "Cláudio Santos",
+      "site": "Braga",
+      "status": "online",
+      "reason": "",
+      "role": "technician",
+      "updated_at": "2026-09-10T19:57:44.338Z"
+    },
+    {
+      "id": 14,
+      "name": "Pedro Lopes",
+      "site": "Braga",
+      "status": "online",
+      "reason": "",
+      "role": "technician",
+      "updated_at": "2026-09-10T19:57:44.338Z"
+    },
+    {
+      "id": 15,
+      "name": "Micaela",
+      "site": "N/A",
+      "status": "online",
+      "reason": "",
+      "role": "stakeholder",
+      "department": "Operations",
+      "updated_at": "2026-09-10T19:57:44.338Z"
+    },
+    {
+      "id": 16,
+      "name": "Rui Lopes",
+      "site": "N/A",
+      "status": "online",
+      "reason": "",
+      "role": "stakeholder",
+      "department": "Talent Acquisition (TA)",
+      "updated_at": "2026-09-10T19:57:44.338Z"
+    },
+    {
+      "id": 17,
+      "name": "Cátia Andrade",
+      "site": "N/A",
+      "status": "online",
+      "reason": "",
+      "role": "stakeholder",
+      "department": "People Solutions (PS)",
+      "updated_at": "2026-09-10T19:57:44.338Z"
+    },
+    {
+      "id": 18,
+      "name": "Jhonathan Gomes",
+      "site": "N/A",
+      "status": "online",
+      "reason": "",
+      "role": "stakeholder",
+      "department": "Facilities",
+      "updated_at": "2026-09-10T19:57:44.338Z"
+    },
+    {
+      "id": 19,
+      "name": "HR Team",
+      "site": "N/A",
+      "status": "online",
+      "reason": "",
+      "role": "stakeholder",
+      "department": "HR",
+      "updated_at": "2026-09-10T19:57:44.338Z"
+    }
+  ],
+  "kanban": [],
+  "tickets": [
+    {
+      "id": 22,
+      "ticket_number": "IT-2026-002",
+      "title": "Deliver Headset - Catia Palma",
+      "description": "Deliver headset to Catia.",
+      "category": "Hardware",
+      "priority": "Low",
+      "status": "Cancelled",
+      "for_employee": "",
+      "requester_name": "Ruben Quintino",
+      "requester_role": "technician",
+      "assigned_to": "Ruben Quintino",
+      "work_notes": [],
+      "created_at": "2026-09-10T20:00:36.899Z",
+      "updated_at": "2026-09-10T20:00:49.147Z",
+      "resolved_at": "2026-09-10T20:00:49.147Z"
+    },
+    {
+      "id": 20,
+      "ticket_number": "IT-2026-001",
+      "title": "Deliver IT Equipment Ana Taveira",
+      "description": "Deliver of all IT equipment from Ana.",
+      "category": "Hardware",
+      "priority": "Medium",
+      "status": "Resolved",
+      "for_employee": "Ana Taveira",
+      "requester_name": "Ruben Quintino",
+      "requester_role": "technician",
+      "assigned_to": "Ruben Quintino",
+      "work_notes": [
+        {
+          "text": "Equipment has been delivered. Thank you!",
+          "author": "Ruben Quintino",
+          "timestamp": "2026-09-10T19:59:59.163Z"
+        }
+      ],
+      "created_at": "2026-09-10T19:59:05.543Z",
+      "updated_at": "2026-09-10T20:00:04.664Z",
+      "resolved_at": "2026-09-10T20:00:04.664Z"
+    }
+  ],
+  "nextId": 24
+}

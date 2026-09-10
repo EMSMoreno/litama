@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "ITAM Excel Import",
+  "version": "0.1.0",
+  "description": "Import asset/user rows from an Excel file into the ITAM app instantly.",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": ["activeTab"],
+  "host_permissions": ["http://localhost/*"]
+}
