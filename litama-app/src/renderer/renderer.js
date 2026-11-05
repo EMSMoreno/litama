@@ -4,7 +4,7 @@ let lastUsers = []; // cached so Edit buttons can look up a user by id without a
 let lastStaff = [];
 let lastAssets = [];
 let lastHistory = [];
-let lastTickets = [];
+//let lastTickets = [];
 let staffEditActive = false; // true from the moment someone touches their own IT Team row's controls until Save — prevents the 2s poll from wiping an in-progress edit
 let kanbanColumns = [];
 let kanbanCards = [];
@@ -111,7 +111,7 @@ async function refreshTables() {
   lastStaff = staff;
   lastAssets = assets;
   lastHistory = history;
-  lastTickets = tickets;
+  //lastTickets = tickets;
   kanbanColumns = kanban.columns;
   kanbanCards = kanban.cards;
   renderLoginBar();
@@ -124,21 +124,17 @@ async function refreshTables() {
   kanbanTab.style.display = isLoggedIn ? "inline-block" : "none";
   if (
     !isLoggedIn &&
-    ["kanban", "tickets"].includes(
-      document.querySelector(".tab.active")?.dataset.tab,
-    )
+    document.querySelector(".tab.active")?.dataset.tab === "kanban"
   ) {
-    document.querySelector('.tab[data-tab="users"]').click(); // bounce back if logged out mid-view
+    document.querySelector('.tab[data-tab="users"]').click();
   }
-  if (isLoggedIn && !kanbanInteracting) renderKanbanBoard();
-  if (!staffEditActive) renderItTeamPanel(); // avoid wiping an in-progress edit on the 2s poll
 
-  document.getElementById("tickets-tab").style.display = isLoggedIn
+  /*document.getElementById("tickets-tab").style.display = isLoggedIn
     ? "inline-block"
     : "none";
   document.getElementById("new-ticket-btn").style.display =
     clientCanCreateTicket(loggedInStaffForKanban) ? "inline-block" : "none";
-  renderTicketsTable();
+  renderTicketsTable(); */
 
   const viewOnly = isViewOnlyLoggedIn();
 
@@ -1176,6 +1172,7 @@ document
     await refreshTables();
   });
 
+/*
 // --- Ticket Management ---
 function clientCanCreateTicket(staff) {
   if (!staff) return false;
@@ -1223,6 +1220,8 @@ function renderTicketsTable() {
     );
   });
 }
+
+*/
 
 // --- New Ticket modal ---
 const ticketModalBackdrop = document.getElementById("ticket-modal-backdrop");
