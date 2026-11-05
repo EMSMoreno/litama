@@ -1,7 +1,46 @@
 {
-  "users": [],
+  "users": [
+    {
+      "id": 25,
+      "workday_id": "12674755",
+      "name": "Inês Pereira",
+      "project": "PAYPAL",
+      "team_leader": "Rita Sousa",
+      "phone": "938009711",
+      "it_ticket": "INC00000002141",
+      "kanban_stage": "Operations",
+      "kanban_stage_entered_at": "2026-11-05T18:53:02.268Z",
+      "kanban_end_checked": false,
+      "updated_at": "2026-11-05T18:53:02.268Z",
+      "origin": "app"
+    }
+  ],
   "assets": [],
   "history": [
+    {
+      "id": 27,
+      "entity_type": "user",
+      "entity_key": "12674755",
+      "action": "ticket_logged",
+      "detail": "IT Ticket INC00000002141 logged via manual entry",
+      "actor": "Eduardo Moreno",
+      "site": null,
+      "it_ticket": "INC00000002141",
+      "ticket_status": "open",
+      "timestamp": "2026-11-05T18:53:02.269Z"
+    },
+    {
+      "id": 26,
+      "entity_type": "user",
+      "entity_key": "12674755",
+      "action": "created",
+      "detail": "Created manually in app",
+      "actor": "?",
+      "site": null,
+      "it_ticket": null,
+      "ticket_status": null,
+      "timestamp": "2026-11-05T18:53:02.268Z"
+    },
     {
       "id": 23,
       "entity_type": "ticket",
@@ -199,9 +238,43 @@
       "role": "stakeholder",
       "department": "HR",
       "updated_at": "2026-09-10T19:57:44.338Z"
+    },
+    {
+      "id": 28,
+      "name": "Rita Sousa",
+      "site": "N/A",
+      "status": "online",
+      "reason": "",
+      "role": "team_leader",
+      "updated_at": "2026-11-05T18:53:02.271Z"
     }
   ],
-  "kanban": [],
+  "kanban": [
+    {
+      "id": 24,
+      "title": "teste",
+      "notes": "notes work",
+      "column": "Operations",
+      "color": "#c6d30d",
+      "updated_at": "2026-11-05T18:53:17.554Z"
+    },
+    {
+      "id": 29,
+      "title": "teste 2",
+      "notes": "notes work",
+      "column": "Operations",
+      "color": "#14e185",
+      "updated_at": "2026-11-05T18:53:29.681Z"
+    },
+    {
+      "id": 30,
+      "title": "teste 3",
+      "notes": "notes",
+      "column": "Operations",
+      "color": "#1118df",
+      "updated_at": "2026-11-05T18:53:49.078Z"
+    }
+  ],
   "tickets": [
     {
       "id": 22,
@@ -244,5 +317,5 @@
       "resolved_at": "2026-09-10T20:00:04.664Z"
     }
   ],
-  "nextId": 24
+  "nextId": 31
 }

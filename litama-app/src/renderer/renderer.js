@@ -99,19 +99,17 @@ async function refreshStatus() {
 }
 
 async function refreshTables() {
-  const [users, assets, history, staff, kanban, tickets] = await Promise.all([
+  const [users, assets, history, staff, kanban] = await Promise.all([
     fetch(`${API}/api/users`).then((r) => r.json()),
     fetch(`${API}/api/assets`).then((r) => r.json()),
     fetch(`${API}/api/history`).then((r) => r.json()),
     fetch(`${API}/api/staff`).then((r) => r.json()),
     fetch(`${API}/api/kanban`).then((r) => r.json()),
-    fetch(`${API}/api/tickets`).then((r) => r.json()),
   ]);
   lastUsers = users;
   lastStaff = staff;
   lastAssets = assets;
   lastHistory = history;
-  //lastTickets = tickets;
   kanbanColumns = kanban.columns;
   kanbanCards = kanban.cards;
   renderLoginBar();
@@ -128,6 +126,8 @@ async function refreshTables() {
   ) {
     document.querySelector('.tab[data-tab="users"]').click();
   }
+  if (isLoggedIn && !kanbanInteracting) renderKanbanBoard();
+  if (!staffEditActive) renderItTeamPanel(); // avoid wiping an in-progress edit on the 2s poll
 
   /*document.getElementById("tickets-tab").style.display = isLoggedIn
     ? "inline-block"
@@ -137,6 +137,9 @@ async function refreshTables() {
   renderTicketsTable(); */
 
   const viewOnly = isViewOnlyLoggedIn();
+
+  document.getElementById("add-employee-btn").style.display =
+    !viewOnly && isLoggedIn ? "inline-block" : "none";
 
   const usersBody = document.getElementById("users-body");
   usersBody.innerHTML = users.length
@@ -235,6 +238,9 @@ const formFields = [
 
 function openUserModal(id) {
   formId.value = id;
+  document.getElementById("user-modal-title").textContent = id
+    ? "Edit User"
+    : "Add Employee";
   const u = lastUsers.find((u) => u.id === id);
   formFields.forEach((f) => {
     document.getElementById(`user-form-${f}`).value = (u && u[f]) || "";
@@ -245,6 +251,10 @@ function openUserModal(id) {
 function closeUserModal() {
   modalBackdrop.style.display = "none";
 }
+
+document.getElementById("add-employee-btn").addEventListener("click", () => {
+  openUserModal(""); // empty id = create mode
+});
 
 document
   .getElementById("user-form-cancel")
@@ -269,6 +279,13 @@ document
       await showConfirmModal("Name is required.", { alertOnly: true });
       return;
     }
+    if (!id && !payload.it_ticket) {
+      await showConfirmModal(
+        "IT Ticket (INC…) is required to show on the Process Board.",
+        { alertOnly: true },
+      );
+      return;
+    }
 
     if (id) {
       await fetch(`${API}/api/users/${id}`, {
@@ -277,6 +294,7 @@ document
         body: JSON.stringify(payload),
       });
     } else {
+      payload.kanban_stage = kanbanColumns[0]; // new employees start in the first column
       await fetch(`${API}/api/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -1172,217 +1190,4 @@ document
     await refreshTables();
   });
 
-/*
-// --- Ticket Management ---
-function clientCanCreateTicket(staff) {
-  if (!staff) return false;
-  if (staff.role === "team_leader" || staff.role === "technician") return true;
-  if (
-    staff.role === "stakeholder" &&
-    (staff.department === "Operations" || staff.department === "HR")
-  )
-    return true;
-  return false;
-}
-
-function priorityBadgeClass(p) {
-  return "badge badge-" + String(p || "").toLowerCase();
-}
-function statusBadgeClass(s) {
-  return (
-    "badge badge-" +
-    String(s || "")
-      .toLowerCase()
-      .replace(/\s+/g, "-")
-  );
-}
-
-function renderTicketsTable() {
-  const body = document.getElementById("tickets-body");
-  body.innerHTML = lastTickets.length
-    ? lastTickets
-        .map(
-          (t) => `
-    <tr class="ticket-row-link" data-id="${t.id}">
-      <td>${t.ticket_number}</td><td>${t.title}</td><td>${t.category}</td>
-      <td><span class="${priorityBadgeClass(t.priority)}">${t.priority}</span></td>
-      <td><span class="${statusBadgeClass(t.status)}">${t.status}</span></td>
-      <td>${t.requester_name}</td><td>${t.for_employee || ""}</td><td>${t.assigned_to || ""}</td>
-      <td>${fmtTime(t.updated_at)}</td>
-    </tr>`,
-        )
-        .join("")
-    : `<tr class="empty-row"><td colspan="9">No tickets yet.</td></tr>`;
-
-  body.querySelectorAll(".ticket-row-link").forEach((row) => {
-    row.addEventListener("click", () =>
-      openTicketDetail(Number(row.dataset.id)),
-    );
-  });
-}
-
-*/
-
-// --- New Ticket modal ---
-const ticketModalBackdrop = document.getElementById("ticket-modal-backdrop");
-document.getElementById("new-ticket-btn").addEventListener("click", () => {
-  document.getElementById("ticket-form-title").value = "";
-  document.getElementById("ticket-form-description").value = "";
-  document.getElementById("ticket-form-category").value = "Hardware";
-  document.getElementById("ticket-form-priority").value = "Medium";
-  document.getElementById("ticket-form-for_employee").value = "";
-  ticketModalBackdrop.style.display = "flex";
-});
-document.getElementById("ticket-form-cancel").addEventListener("click", () => {
-  ticketModalBackdrop.style.display = "none";
-});
-ticketModalBackdrop.addEventListener("click", (e) => {
-  if (e.target === ticketModalBackdrop)
-    ticketModalBackdrop.style.display = "none";
-});
-document
-  .getElementById("ticket-form-save")
-  .addEventListener("click", async () => {
-    const title = document.getElementById("ticket-form-title").value.trim();
-    if (!title) {
-      await showConfirmModal("Title is required.", { alertOnly: true });
-      return;
-    }
-    const loggedInStaff = lastStaff.find((s) => s.id === getLoggedInStaffId());
-    const payload = {
-      title,
-      description: document
-        .getElementById("ticket-form-description")
-        .value.trim(),
-      category: document.getElementById("ticket-form-category").value,
-      priority: document.getElementById("ticket-form-priority").value,
-      for_employee: document
-        .getElementById("ticket-form-for_employee")
-        .value.trim(),
-      requesterStaffId: loggedInStaff ? loggedInStaff.id : null,
-    };
-    const res = await fetch(`${API}/api/tickets`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      await showConfirmModal(err.error || "Could not create ticket.", {
-        alertOnly: true,
-      });
-      return;
-    }
-    ticketModalBackdrop.style.display = "none";
-    await refreshTables();
-    document.querySelector('.tab[data-tab="tickets"]').click();
-  });
-
-// --- Ticket Detail modal ---
-const ticketDetailBackdrop = document.getElementById("ticket-detail-backdrop");
-function openTicketDetail(id) {
-  const t = lastTickets.find((x) => x.id === id);
-  if (!t) return;
-  const loggedInStaff = lastStaff.find((s) => s.id === getLoggedInStaffId());
-  const isTech = loggedInStaff && loggedInStaff.role === "technician";
-
-  document.getElementById("ticket-detail-title").textContent =
-    `${t.ticket_number} — ${t.title}`;
-
-  const grid = `
-    <div class="ticket-detail-grid">
-      <div class="profile-row"><span class="label">Category</span><span class="value">${t.category}</span></div>
-      <div class="profile-row"><span class="label">Priority</span><span class="value"><span class="${priorityBadgeClass(t.priority)}">${t.priority}</span></span></div>
-      <div class="profile-row"><span class="label">Requester</span><span class="value">${t.requester_name}</span></div>
-      <div class="profile-row"><span class="label">For Employee</span><span class="value">${t.for_employee || "?"}</span></div>
-      <div class="profile-row"><span class="label">Status</span><span class="value"><span class="${statusBadgeClass(t.status)}">${t.status}</span></span></div>
-      <div class="profile-row"><span class="label">Assigned To</span><span class="value">${t.assigned_to || "(unassigned)"}</span></div>
-    </div>
-    <div class="ticket-detail-desc">${t.description || "No description provided."}</div>`;
-
-  const controls = isTech
-    ? `
-    <div class="ticket-controls">
-      <button id="ticket-assign-me-btn" class="btn-icon">Assign to me</button>
-      <select id="ticket-status-select">
-        ${["New", "Assigned", "In Progress", "Resolved", "Closed", "Cancelled"].map((s) => `<option value="${s}" ${s === t.status ? "selected" : ""}>${s}</option>`).join("")}
-      </select>
-      <button id="ticket-status-save-btn" class="btn-icon">Update Status</button>
-    </div>`
-    : "";
-
-  const notesHtml = t.work_notes.length
-    ? t.work_notes
-        .map(
-          (n) =>
-            `<div class="ticket-note">${n.text}<div class="ticket-note-meta">${n.author} · ${fmtTime(n.timestamp)}</div></div>`,
-        )
-        .join("")
-    : `<div style="color:var(--text-dim); font-size:12px;">No notes yet.</div>`;
-
-  const addNoteHtml = loggedInStaff
-    ? `
-    <div class="ticket-add-note">
-      <textarea id="ticket-note-input" rows="2" placeholder="Add a work note..."></textarea>
-      <button id="ticket-note-save-btn" class="btn-icon" style="margin-top:6px;">Add Note</button>
-    </div>`
-    : "";
-
-  document.getElementById("ticket-detail-body").innerHTML =
-    grid +
-    controls +
-    `<div class="ticket-notes-header">Work Notes</div>${notesHtml}${addNoteHtml}`;
-
-  if (isTech) {
-    document
-      .getElementById("ticket-assign-me-btn")
-      .addEventListener("click", async () => {
-        await fetch(`${API}/api/tickets/${t.id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            assigned_to: loggedInStaff.name,
-            status: t.status === "New" ? "Assigned" : t.status,
-          }),
-        });
-        await refreshTables();
-        openTicketDetail(id);
-      });
-    document
-      .getElementById("ticket-status-save-btn")
-      .addEventListener("click", async () => {
-        const status = document.getElementById("ticket-status-select").value;
-        await fetch(`${API}/api/tickets/${t.id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ status }),
-        });
-        await refreshTables();
-        openTicketDetail(id);
-      });
-  }
-  if (loggedInStaff) {
-    document
-      .getElementById("ticket-note-save-btn")
-      .addEventListener("click", async () => {
-        const text = document.getElementById("ticket-note-input").value.trim();
-        if (!text) return;
-        await fetch(`${API}/api/tickets/${t.id}/notes`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text, author: loggedInStaff.name }),
-        });
-        await refreshTables();
-        openTicketDetail(id);
-      });
-  }
-
-  ticketDetailBackdrop.style.display = "flex";
-}
-document.getElementById("ticket-detail-close").addEventListener("click", () => {
-  ticketDetailBackdrop.style.display = "none";
-});
-ticketDetailBackdrop.addEventListener("click", (e) => {
-  if (e.target === ticketDetailBackdrop)
-    ticketDetailBackdrop.style.display = "none";
-});
+// --- Ticket Management: removed (previous code kept in git history) ---

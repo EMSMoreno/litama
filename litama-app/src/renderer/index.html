@@ -45,14 +45,6 @@
         >
           Process Board
         </button>
-        <button
-          class="tab"
-          data-tab="tickets"
-          id="tickets-tab"
-          style="display: none"
-        >
-          Tickets
-        </button>
       </div>
       <div class="toolbar-right">
         <button id="add-kit-btn" class="btn-primary" style="display: none">
@@ -130,32 +122,15 @@
       <section id="panel-kanban" class="panel">
         <div class="kanban-toolbar">
           <button id="add-card-btn" class="btn-primary">+ Add Card</button>
-        </div>
-        <div id="kanban-board" class="kanban-board"></div>
-      </section>
-
-      <section id="panel-tickets" class="panel">
-        <div class="kanban-toolbar">
-          <button id="new-ticket-btn" class="btn-primary" style="display: none">
-            + New Ticket
+          <button
+            id="add-employee-btn"
+            class="btn-primary"
+            style="display: none"
+          >
+            + Add Employee
           </button>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Ticket #</th>
-              <th>Title</th>
-              <th>Category</th>
-              <th>Priority</th>
-              <th>Status</th>
-              <th>Requester</th>
-              <th>For</th>
-              <th>Assigned</th>
-              <th>Updated</th>
-            </tr>
-          </thead>
-          <tbody id="tickets-body"></tbody>
-        </table>
+        <div id="kanban-board" class="kanban-board"></div>
       </section>
     </main>
 
@@ -346,71 +321,6 @@
         <div id="profile-modal-body" class="profile-body"></div>
         <div class="modal-actions">
           <button id="profile-modal-close" class="btn-secondary">Close</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- New Ticket modal -->
-    <div
-      id="ticket-modal-backdrop"
-      class="modal-backdrop"
-      style="display: none"
-    >
-      <div class="modal modal-wide">
-        <h2>New Ticket</h2>
-        <label>Title<input type="text" id="ticket-form-title" /></label>
-        <label
-          >Description<textarea
-            id="ticket-form-description"
-            class="ticket-desc-input"
-            rows="8"
-          ></textarea>
-        </label>
-        <label
-          >Category
-          <select id="ticket-form-category">
-            <option>Hardware</option>
-            <option>Software</option>
-            <option>Access Request</option>
-            <option>New Equipment</option>
-            <option>Other</option>
-          </select>
-        </label>
-        <label
-          >Priority
-          <select id="ticket-form-priority">
-            <option>Low</option>
-            <option selected>Medium</option>
-            <option>High</option>
-            <option>Critical</option>
-          </select>
-        </label>
-        <label
-          >For Employee (optional)<input
-            type="text"
-            id="ticket-form-for_employee"
-            placeholder="Name of the agent this is for"
-        /></label>
-        <div class="modal-actions">
-          <button id="ticket-form-cancel" class="btn-secondary">Cancel</button>
-          <button id="ticket-form-save" class="btn-primary">
-            Create Ticket
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Ticket Detail modal -->
-    <div
-      id="ticket-detail-backdrop"
-      class="modal-backdrop"
-      style="display: none"
-    >
-      <div class="modal modal-wide">
-        <h2 id="ticket-detail-title">Ticket</h2>
-        <div id="ticket-detail-body"></div>
-        <div class="modal-actions">
-          <button id="ticket-detail-close" class="btn-secondary">Close</button>
         </div>
       </div>
     </div>
